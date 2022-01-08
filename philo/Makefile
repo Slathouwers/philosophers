@@ -6,7 +6,7 @@
 #    By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/08 13:26:56 by slathouw          #+#    #+#              #
-#    Updated: 2022/01/08 13:54:31 by slathouw         ###   ########.fr        #
+#    Updated: 2022/01/08 13:56:59 by slathouw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ LIBFLAGS =
 OBJDIR	= obj
 
 # ADD "SRCS" FILES HERE
-SOURCES	= 
+SOURCES	= philo.c
 SRCDIR 	= srcs
 SRCS 	= ${addprefix $(SRCDIR)/, $(SOURCES)}
 OBJS	= ${addprefix $(OBJDIR)/srcs_, $(SOURCES:.c=.o)}
