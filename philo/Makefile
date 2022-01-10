@@ -6,7 +6,7 @@
 #    By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/08 13:26:56 by slathouw          #+#    #+#              #
-#    Updated: 2022/01/09 12:59:47 by slathouw         ###   ########.fr        #
+#    Updated: 2022/01/10 17:34:38 by slathouw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
-	@echo "philo objects removed..."
+	@echo "philo binary removed..."
 
 
 re :		fclean all
