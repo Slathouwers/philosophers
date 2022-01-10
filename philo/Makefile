@@ -6,7 +6,7 @@
 #    By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/08 13:26:56 by slathouw          #+#    #+#              #
-#    Updated: 2022/01/08 13:56:59 by slathouw         ###   ########.fr        #
+#    Updated: 2022/01/09 12:59:47 by slathouw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,11 @@ NAME 	= philo
 INCLUDES= includes
 CC		= gcc
 CFLAGS	= -Wall -Wextra -Werror -g 
-LIBFLAGS = 
+LIBFLAGS = -lpthread 
 OBJDIR	= obj
 
 # ADD "SRCS" FILES HERE
-SOURCES	= philo.c
+SOURCES	= death.c free_destroy.c philo.c utils.c utils2.c init.c life.c 
 SRCDIR 	= srcs
 SRCS 	= ${addprefix $(SRCDIR)/, $(SOURCES)}
 OBJS	= ${addprefix $(OBJDIR)/srcs_, $(SOURCES:.c=.o)}
