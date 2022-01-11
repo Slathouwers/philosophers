@@ -6,7 +6,7 @@
 #    By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/08 13:26:56 by slathouw          #+#    #+#              #
-#    Updated: 2022/01/10 18:33:27 by slathouw         ###   ########.fr        #
+#    Updated: 2022/01/11 13:14:40 by slathouw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ LIBFLAGS = -lpthread
 OBJDIR	= obj
 
 # ADD "SRCS" FILES HERE
-SOURCES	= death.c free_destroy.c philo.c utils.c utils2.c init.c life.c 
+SOURCES	= death.c free_destroy.c philo_bonus.c utils.c utils2.c init.c life.c utils3.c
 SRCDIR 	= srcs
 SRCS 	= ${addprefix $(SRCDIR)/, $(SOURCES)}
 OBJS	= ${addprefix $(OBJDIR)/srcs_, $(SOURCES:.c=.o)}
@@ -34,7 +34,7 @@ all : 		${NAME}
 ###############
 
 # PHILO linking compilation
-$(NAME) :	$(OBJS) includes/philo.h
+$(NAME) :	$(OBJS) includes/philo_bonus.h
 	@${CC} ${CFLAGS} -I ${INCLUDES} ${OBJS} $(LIBFLAGS) -o ${NAME}
 	@echo "philo_bonus binary created!"
 
