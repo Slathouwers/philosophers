@@ -6,68 +6,61 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:31:04 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/10 18:31:48 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/11 13:21:57 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	kill_philo(t_philo *p);
-void	*reap_death(void *phil_arr);
-int		all_finished_eating(t_philo *phil_arr);
+int		ate_enough(t_philo *p);
+void	reap_death(t_philo *p);
+void	post_start(t_dinner *d);
 
-void	kill_philo(t_philo *p)
+int	ate_enough(t_philo *p)
 {
-	p->dead = 1;
-	p->d->finished = 1;
-	print_action(p, get_tstamp(), "has died");
+	if (p->d->min_n_meals > 0 && p->n_meals >= p->d->min_n_meals)
+		return (1);
+	return (0);
 }
 
-int	all_finished_eating(t_philo *phil_arr)
+static int	is_dead(t_philo *p)
 {
-	int			flag_finished_eating;
-	int			i;
-	t_dinner	*d;
-
-	d = phil_arr[0].d;
-	if (d->min_n_meals < 0)
-		return (0);
-	flag_finished_eating = 1;
-	i = -1;
-	while (++i < d->n_philos)
-		if (phil_arr[i].n_meals < d->min_n_meals)
-			flag_finished_eating = 0;
-	if (flag_finished_eating)
-		d->finished = 1;
-	return (flag_finished_eating);
+	sem_wait(p->sem_lunch);
+	if (get_tstamp() - p->tstamp_last_meal > p->d->t_to_die)
+	{
+		p->dead = 1;
+		print_action(p, get_tstamp(), "has died");
+		return (1);
+	}
+	sem_post(p->sem_lunch);
+	return (0);
 }
 
-void	*reap_death(void *phil_arr)
+void	reap_death(t_philo *p)
 {
-	t_philo		*philos;
-	time_t		now;
-	int			i;
-	t_dinner	*d;
+	pthread_t	life_thread;
+	const int	alive = 1;
 
-	philos = (t_philo *)phil_arr;
-	d = philos[0].d;
-	while (!d->finished)
+	sem_wait(p->d->sem_start);
+	p->tstamp_last_meal = get_tstamp();
+	if (pthread_create(&life_thread, NULL, &life, p)
+		|| pthread_detach(life_thread))
+		exit(EXIT_ERROR);
+	while (alive)
 	{
 		carefully_oversleep(3);
-		i = -1;
-		while (++i < d->n_philos)
-		{
-			now = get_tstamp();
-			pthread_mutex_lock(&philos[i].mealtime_lock);
-			if (now - philos[i].tstamp_last_meal > d->t_to_die)
-			{
-				kill_philo(&philos[i]);
-				return (NULL);
-			}
-			pthread_mutex_unlock(&philos[i].mealtime_lock);
-		}
-		if (all_finished_eating(philos))
-			return (NULL);
+		if (is_dead(p))
+			exit(EXIT_PHILO_DIED);
+		if (ate_enough(p))
+			exit(EXIT_ATE_ENOUGH);
 	}
-	return (NULL);
+}
+
+void	post_start(t_dinner *d)
+{
+	int	i;
+
+	i = -1;
+	while (++i < d->n_philos)
+		sem_post(d->sem_start);
 }
