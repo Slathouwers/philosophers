@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:26:43 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/11 13:24:57 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/11 14:05:18 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	eat(t_philo *p)
 {
 	const t_dinner	*d = p->d;
 
-	p->n_meals++;
 	print_action(p, get_tstamp(), "is eating");
 	p->tstamp_last_meal = get_tstamp();
 	sem_post(p->sem_lunch);
+	p->n_meals++;
 	carefully_oversleep(d->t_to_eat);
 	sem_post(d->sem_forks);
 	sem_post(d->sem_forks);
@@ -60,8 +60,8 @@ void	*life(void *philosopher)
 	t_philo	*p;
 
 	p = (t_philo *)philosopher;
-	if ((p->id % 2))
-		carefully_oversleep(2);
+	if (p->id % 2)
+		carefully_oversleep(1);
 	while (!p->dead)
 	{
 		take_forks(p);

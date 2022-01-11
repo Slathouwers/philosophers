@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:20:57 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/11 13:13:09 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/11 13:56:28 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ int	launch_philos(t_dinner *d)
 	while (++i < d->n_philos)
 	{
 		d->philo_arr[i].pid = fork();
-		d->philo_arr[i].tstamp_last_meal = d->tstamp_start;
 		if (!d->philo_arr[i].pid)
 			reap_death(&d->philo_arr[i]);
 		else if (d->philo_arr[i].pid < 0)
