@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:31:04 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/12 10:10:10 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/12 11:16:10 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,13 @@ int	all_finished_eating(t_philo *phil_arr)
 
 void	*reap_death(void *phil_arr)
 {
-	const t_philo	*philos = (t_philo *)phil_arr;
+	t_philo			*philos;
 	time_t			now;
 	int				i;
-	const t_dinner	*d = philos[0].d;
+	t_dinner		*d;
 
+	philos = (t_philo *)phil_arr;
+	d = philos[0].d;
 	while (!d->finished)
 	{
 		carefully_oversleep(1);
