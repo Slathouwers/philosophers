@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   life.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:26:43 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/11 14:05:18 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/12 10:35:29 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ void	eat(t_philo *p)
 	print_action(p, get_tstamp(), "is eating");
 	p->tstamp_last_meal = get_tstamp();
 	sem_post(p->sem_lunch);
-	p->n_meals++;
 	carefully_oversleep(d->t_to_eat);
 	sem_post(d->sem_forks);
 	sem_post(d->sem_forks);
+	p->n_meals++;
 }
 
 void	go_to_sleep(t_philo *p)
@@ -61,7 +61,7 @@ void	*life(void *philosopher)
 
 	p = (t_philo *)philosopher;
 	if (p->id % 2)
-		carefully_oversleep(1);
+		carefully_oversleep(3);
 	while (!p->dead)
 	{
 		take_forks(p);
