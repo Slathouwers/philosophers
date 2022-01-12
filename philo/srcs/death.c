@@ -6,21 +6,22 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:31:04 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/12 11:16:10 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/12 12:27:01 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	kill_philo(t_philo *p);
+void	*kill_philo(t_philo *p);
 void	*reap_death(void *phil_arr);
 int		all_finished_eating(t_philo *phil_arr);
 
-void	kill_philo(t_philo *p)
+void	*kill_philo(t_philo *p)
 {
 	p->dead = 1;
 	p->d->finished = 1;
 	print_action(p, get_tstamp(), "has died", 1);
+	return (NULL);
 }
 
 int	all_finished_eating(t_philo *phil_arr)
@@ -68,10 +69,7 @@ void	*reap_death(void *phil_arr)
 			now = get_tstamp();
 			pthread_mutex_lock(&philos[i].mealtime_lock);
 			if (now - philos[i].tstamp_last_meal > d->t_to_die)
-			{
-				kill_philo(&philos[i]);
-				return (NULL);
-			}
+				return ((void *)kill_philo(&philos[i]));
 			pthread_mutex_unlock(&philos[i].mealtime_lock);
 		}
 		if (all_finished_eating(philos))

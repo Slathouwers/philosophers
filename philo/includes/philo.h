@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 13:31:43 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/12 10:00:54 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/12 12:26:46 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	think(t_philo *p);
 void	*life(void *philosopher);
 
 /*DEATH.c*/
-void	kill_philo(t_philo *p);
+void	*kill_philo(t_philo *p);
 void	*reap_death(void *phil_arr);
 int		all_finished_eating(t_philo *phil_arr);
 
