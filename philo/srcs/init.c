@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:20:57 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/12 10:14:48 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/12 12:41:18 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,17 @@ int	init_philos(t_dinner *dinner)
 	return (1);
 }
 
+void	join_threads(t_dinner *d)
+{
+	int	i;
+
+	i = -1;
+	while (++i < d->n_philos)
+	{
+		pthread_join(d->life_threads[i], NULL);
+	}
+}
+
 int	init_threads(t_dinner *d)
 {
 	int			n_philos;
@@ -98,5 +109,6 @@ int	init_threads(t_dinner *d)
 	pthread_create(&grim_reaper, NULL, &reap_death, (void *)d->philo_arr);
 	pthread_join(grim_reaper, NULL);
 	d->life_threads = life_threads;
+//	join_threads(d);
 	return (1);
 }
