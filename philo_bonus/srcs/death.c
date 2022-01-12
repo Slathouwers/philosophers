@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   death.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:31:04 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/11 13:21:57 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/12 09:53:19 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,11 @@ int	ate_enough(t_philo *p)
 
 static int	is_dead(t_philo *p)
 {
+	time_t	now;
+
+	now = get_tstamp();
 	sem_wait(p->sem_lunch);
-	if (get_tstamp() - p->tstamp_last_meal > p->d->t_to_die)
+	if (now - p->tstamp_last_meal > p->d->t_to_die)
 	{
 		p->dead = 1;
 		print_action(p, get_tstamp(), "has died");
