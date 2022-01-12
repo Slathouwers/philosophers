@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:20:57 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/10 09:16:56 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/12 10:14:48 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,10 @@ int	init_threads(t_dinner *d)
 		d->philo_arr[n_philos].tstamp_last_meal = get_tstamp();
 		pthread_create(&life_threads[n_philos], NULL,
 			&life, (void *)&d->philo_arr[n_philos]);
-		pthread_detach(life_threads[n_philos]);
+		pthread_detach(life_threads[n_philos]); //TODO: create joinable threads
 	}
 	pthread_create(&grim_reaper, NULL, &reap_death, (void *)d->philo_arr);
 	pthread_join(grim_reaper, NULL);
-	//reap_death(d->philo_arr);
 	d->life_threads = life_threads;
 	return (1);
 }

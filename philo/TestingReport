@@ -1,0 +1,5 @@
+
+Issues found:
+=============
+	- Segmentation fault on free'ing and deleting pointer to memory still used by other (detached) threads
+	- Unwanted behavoir like thread i printing an action after the simulation has ended due to unlocking all mutexes before destroying them
