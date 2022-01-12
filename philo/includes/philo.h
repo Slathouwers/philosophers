@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 13:31:43 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/10 09:29:50 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/12 10:00:54 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int		err(const char *s);
 void	ft_bzero(void *s, size_t n);
 
 /*UTILS2.c*/
-void	print_action(t_philo *p, time_t ts, const char *s);
+void	print_action(t_philo *p, time_t ts, const char *s, int forced);
 void	carefully_oversleep(int ms);
 
 /*INIT.c*/
