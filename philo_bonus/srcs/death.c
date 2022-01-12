@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:31:04 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/12 09:53:19 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/12 11:34:41 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	reap_death(t_philo *p)
 		exit(EXIT_ERROR);
 	while (alive)
 	{
-		carefully_oversleep(3);
+		carefully_oversleep(1);
 		if (is_dead(p))
 			exit(EXIT_PHILO_DIED);
 		if (ate_enough(p))
