@@ -20,6 +20,7 @@ void	*kill_philo(t_philo *p)
 {
 	p->dead = 1;
 	p->d->finished = 1;
+	pthread_mutex_unlock(p->l_fork);
 	print_action(p, get_tstamp(), "has died", 1);
 	return (NULL);
 }
