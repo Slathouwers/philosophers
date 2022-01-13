@@ -104,11 +104,10 @@ int	init_threads(t_dinner *d)
 		d->philo_arr[n_philos].tstamp_last_meal = get_tstamp();
 		pthread_create(&life_threads[n_philos], NULL,
 			&life, (void *)&d->philo_arr[n_philos]);
-		pthread_detach(life_threads[n_philos]); //TODO: create joinable threads
 	}
 	pthread_create(&grim_reaper, NULL, &reap_death, (void *)d->philo_arr);
 	pthread_join(grim_reaper, NULL);
 	d->life_threads = life_threads;
-//	join_threads(d);
+	join_threads(d);
 	return (1);
 }

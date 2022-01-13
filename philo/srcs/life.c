@@ -22,18 +22,30 @@ void	take_forks(t_philo *p)
 {
 	if (p->id % 2 == 0 && p->id + 1 < p->d->n_philos)
 	{
+		if (p->d->finished)
+			return ;
 		pthread_mutex_lock(p->r_fork);
 		print_action(p, get_tstamp(), "has taken a fork", 0);
+		if (p->d->finished)
+			return ;
 		pthread_mutex_lock(p->l_fork);
 		print_action(p, get_tstamp(), "has taken a fork", 0);
+		if (p->d->finished)
+			return ;
 		pthread_mutex_lock(&p->mealtime_lock);
 	}
 	else
 	{
+		if (p->d->finished)
+			return ;
 		pthread_mutex_lock(p->l_fork);
 		print_action(p, get_tstamp(), "has taken a fork", 0);
+		if (p->d->finished)
+			return ;
 		pthread_mutex_lock(p->r_fork);
 		print_action(p, get_tstamp(), "has taken a fork", 0);
+		if (p->d->finished)
+			return ;
 		pthread_mutex_lock(&p->mealtime_lock);
 	}
 }
