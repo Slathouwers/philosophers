@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   life.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:26:43 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/12 10:01:41 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/13 09:21:58 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,31 +22,25 @@ void	take_forks(t_philo *p)
 {
 	if (p->id % 2 == 0 && p->id + 1 < p->d->n_philos)
 	{
-		if (p->d->finished)
+		if (!carefully_lock_mutex(p->r_fork, p))
 			return ;
-		pthread_mutex_lock(p->r_fork);
 		print_action(p, get_tstamp(), "has taken a fork", 0);
-		if (p->d->finished)
+		if (!carefully_lock_mutex(p->l_fork, p))
 			return ;
-		pthread_mutex_lock(p->l_fork);
 		print_action(p, get_tstamp(), "has taken a fork", 0);
-		if (p->d->finished)
+		if (!carefully_lock_mutex(&p->mealtime_lock, p))
 			return ;
-		pthread_mutex_lock(&p->mealtime_lock);
 	}
 	else
 	{
-		if (p->d->finished)
+		if (!carefully_lock_mutex(p->l_fork, p))
 			return ;
-		pthread_mutex_lock(p->l_fork);
 		print_action(p, get_tstamp(), "has taken a fork", 0);
-		if (p->d->finished)
+		if (!carefully_lock_mutex(p->r_fork, p))
 			return ;
-		pthread_mutex_lock(p->r_fork);
 		print_action(p, get_tstamp(), "has taken a fork", 0);
-		if (p->d->finished)
+		if (!carefully_lock_mutex(&p->mealtime_lock, p))
 			return ;
-		pthread_mutex_lock(&p->mealtime_lock);
 	}
 }
 

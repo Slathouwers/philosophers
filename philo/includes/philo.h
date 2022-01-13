@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 13:31:43 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/12 12:26:46 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/13 09:19:53 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	ft_bzero(void *s, size_t n);
 /*UTILS2.c*/
 void	print_action(t_philo *p, time_t ts, const char *s, int forced);
 void	carefully_oversleep(int ms);
+int		carefully_lock_mutex(pthread_mutex_t *m, t_philo *p);
 
 /*INIT.c*/
 int		init_dinner(t_dinner *d, int ac, char **av);

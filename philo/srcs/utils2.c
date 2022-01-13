@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:52:26 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/12 10:00:37 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/13 09:19:36 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	print_action(t_philo *p, time_t ts, const char *s, int forced);
 void	carefully_oversleep(int ms);
+int		carefully_lock_mutex(pthread_mutex_t *m, t_philo *p);
 
 void	print_action(t_philo *p, time_t ts, const char *s, int forced)
 {
@@ -34,4 +35,12 @@ void	carefully_oversleep(int ms)
 	usleep(ms * 920);
 	while (get_tstamp() < time + ms)
 		usleep(50);
+}
+
+int	carefully_lock_mutex(pthread_mutex_t *m, t_philo *p)
+{
+	if (p->d->finished)
+		return (0);
+	pthread_mutex_lock(m);
+	return (1);
 }
