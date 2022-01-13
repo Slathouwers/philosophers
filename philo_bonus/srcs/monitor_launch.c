@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 14:40:25 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/13 14:41:31 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/13 15:28:27 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	*monitor_death_thread(void *dinner)
 	if (WEXITSTATUS(exit_status) == EXIT_PHILO_DIED
 		&& ((t_dinner *)dinner)->full_detected == 0)
 		((t_dinner *)dinner)->death_detected = 1;
+	sem_post(((t_dinner *)dinner)->philo_arr[0].sem_n_meals);
 	return (NULL);
 }
 
@@ -37,20 +38,20 @@ static void	*monitor_full_thread(void *dinner)
 	n_meals_arr = (int *)malloc(sizeof(int) * d->n_philos);
 	ft_bzero(n_meals_arr, sizeof(int) * d->n_philos);
 	n_full = 0;
-	while (n_full < d->n_philos)
+	while (n_full < d->n_philos && !d->death_detected)
 	{
 		i = -1;
-		while (++i < d->n_philos)
+		while (++i < d->n_philos && !d->death_detected)
 		{
 			sem_wait(d->philo_arr[i].sem_n_meals);
 			n_meals_arr[i]++;
-			if (n_meals_arr[i] == d->min_n_meals)
+			if (n_meals_arr[i] == d->min_n_meals && !d->death_detected)
 				n_full++;
 		}
 	}
 	d->full_detected = 1;
-	sem_wait(d->sem_printer);
 	printf("All philo's full..\n");
+	free(n_meals_arr);
 	return (NULL);
 }
 
