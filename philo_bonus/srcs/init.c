@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:20:57 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/11 13:56:28 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/13 14:42:30 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 int		init_dinner(t_dinner *d, int ac, char **av);
 int		init_semaphores(t_dinner *d);
 int		init_philos(t_dinner *d);
-void	monitor_philos(t_dinner *d);
-int		launch_philos(t_dinner *d);
 
 int	init_dinner(t_dinner *d, int ac, char **av)
 {
@@ -52,61 +50,22 @@ int	init_philos(t_dinner *d)
 	i = -1;
 	while (++i < d->n_philos)
 	{
+		carefully_oversleep(2);
 		ft_bzero(&d->philo_arr[i], sizeof(t_philo));
 		d->philo_arr[i].id = i;
 		d->philo_arr[i].d = d;
 		d->philo_arr[i].lname = get_lunch_name(i);
 		sem_unlink(d->philo_arr[i].lname);
-		d->philo_arr[i].sem_lunch = sem_open(d->philo_arr[i].lname, O_CREAT,
-				S_IRWXU | S_IRWXG, 1);
-		if (!d->philo_arr[i].sem_lunch)
+		d->philo_arr[i].sem_lunch_lock = sem_open(d->philo_arr[i].lname,
+				O_CREAT, S_IRWXU | S_IRWXG, 1);
+		if (!d->philo_arr[i].sem_lunch_lock)
+			return (0);
+		d->philo_arr[i].nname = get_lunch_name(i + d->n_philos);
+		sem_unlink(d->philo_arr[i].nname);
+		d->philo_arr[i].sem_n_meals = sem_open(d->philo_arr[i].nname,
+				O_CREAT, S_IRWXU | S_IRWXG, 0);
+		if (!d->philo_arr[i].sem_lunch_lock)
 			return (0);
 	}
-	return (1);
-}
-
-void	monitor_philos(t_dinner *d)
-{
-	int	n_philos_full;
-	int	exit_status;
-
-	n_philos_full = 0;
-	if (d->min_n_meals > 0)
-	{
-		while (n_philos_full < d->n_philos)
-		{
-			waitpid(-1, &exit_status, 0);
-			if (WEXITSTATUS(exit_status) == EXIT_PHILO_DIED)
-				break ;
-			n_philos_full++;
-		}
-		if (n_philos_full == d->n_philos)
-			printf("All philo's full..\n");
-	}
-	else
-		waitpid(-1, &exit_status, 0);
-	kill_all_philoprocs(d);
-	close_semaphores(d);
-}
-
-int	launch_philos(t_dinner *d)
-{
-	int	i;
-
-	i = -1;
-	d->philo_arr = malloc(sizeof(t_philo) * d->n_philos);
-	if (!d->philo_arr || !init_philos(d))
-		return (0);
-	d->tstamp_start = get_tstamp();
-	while (++i < d->n_philos)
-	{
-		d->philo_arr[i].pid = fork();
-		if (!d->philo_arr[i].pid)
-			reap_death(&d->philo_arr[i]);
-		else if (d->philo_arr[i].pid < 0)
-			return (0);
-	}
-	post_start(d);
-	monitor_philos(d);
 	return (1);
 }

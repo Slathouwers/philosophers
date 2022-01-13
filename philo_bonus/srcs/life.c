@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:26:43 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/12 10:35:29 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/13 13:57:39 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,20 @@ void	take_forks(t_philo *p)
 	print_action(p, get_tstamp(), "has taken a fork");
 	sem_wait(d->sem_forks);
 	print_action(p, get_tstamp(), "has taken a fork");
-	sem_wait(p->sem_lunch);
+	sem_wait(p->sem_lunch_lock);
 }
 
 void	eat(t_philo *p)
 {
 	const t_dinner	*d = p->d;
 
-	print_action(p, get_tstamp(), "is eating");
 	p->tstamp_last_meal = get_tstamp();
-	sem_post(p->sem_lunch);
+	print_action(p, get_tstamp(), "is eating");
+	sem_post(p->sem_n_meals);
+	sem_post(p->sem_lunch_lock);
 	carefully_oversleep(d->t_to_eat);
 	sem_post(d->sem_forks);
 	sem_post(d->sem_forks);
-	p->n_meals++;
 }
 
 void	go_to_sleep(t_philo *p)

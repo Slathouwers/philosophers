@@ -6,36 +6,28 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:31:04 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/12 11:34:41 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/13 13:51:35 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int		ate_enough(t_philo *p);
 void	reap_death(t_philo *p);
 void	post_start(t_dinner *d);
-
-int	ate_enough(t_philo *p)
-{
-	if (p->d->min_n_meals > 0 && p->n_meals >= p->d->min_n_meals)
-		return (1);
-	return (0);
-}
 
 static int	is_dead(t_philo *p)
 {
 	time_t	now;
 
 	now = get_tstamp();
-	sem_wait(p->sem_lunch);
+	sem_wait(p->sem_lunch_lock);
 	if (now - p->tstamp_last_meal > p->d->t_to_die)
 	{
 		p->dead = 1;
 		print_action(p, get_tstamp(), "has died");
 		return (1);
 	}
-	sem_post(p->sem_lunch);
+	sem_post(p->sem_lunch_lock);
 	return (0);
 }
 
@@ -54,8 +46,6 @@ void	reap_death(t_philo *p)
 		carefully_oversleep(1);
 		if (is_dead(p))
 			exit(EXIT_PHILO_DIED);
-		if (ate_enough(p))
-			exit(EXIT_ATE_ENOUGH);
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 13:31:43 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/11 13:13:13 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/13 14:41:57 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,8 @@ a-detached-pthread-causes-memory-leaks
 # include <fcntl.h>
 # include <semaphore.h>
 
-# define EXIT_ATE_ENOUGH	42
-# define EXIT_PHILO_DIED	43
-# define EXIT_ERROR			44
+# define EXIT_PHILO_DIED	42
+# define EXIT_ERROR			21
 
 typedef struct s_philo	t_philo;
 typedef struct s_dinner	t_dinner;
@@ -43,10 +42,11 @@ struct s_philo
 	int				id;
 	pid_t			pid;
 	time_t			tstamp_last_meal;
-	int				n_meals;
 	int				dead;
-	sem_t			*sem_lunch;
 	char			*lname;
+	sem_t			*sem_lunch_lock;
+	char			*nname;
+	sem_t			*sem_n_meals;
 	t_dinner		*d;
 };
 
@@ -57,8 +57,11 @@ struct s_dinner
 	int				t_to_eat;
 	int				t_to_sleep;
 	int				min_n_meals;
+	int				death_detected;
+	int				full_detected;
 	time_t			tstamp_start;
 	sem_t			*sem_forks;
+	sem_t			*sem_n_meals;
 	sem_t			*sem_start;
 	sem_t			*sem_printer;
 	t_philo			*philo_arr;
@@ -86,6 +89,8 @@ char	*ft_strjoin(char *s1, char *s2);
 int		init_dinner(t_dinner *d, int ac, char **av);
 int		init_semaphores(t_dinner *d);
 int		init_philos(t_dinner *d);
+
+/*MONITOR_LAUNCH.c*/
 void	monitor_philos(t_dinner *d);
 int		launch_philos(t_dinner *d);
 
@@ -97,7 +102,6 @@ void	think(t_philo *p);
 void	*life(void *philosopher);
 
 /*DEATH.c*/
-int		ate_enough(t_philo *p);
 void	reap_death(t_philo *p);
 void	post_start(t_dinner *d);
 

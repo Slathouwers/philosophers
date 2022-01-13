@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_destroy.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 10:27:51 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/11 13:09:07 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/13 13:58:29 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,14 @@ void	kill_all_philoprocs(t_dinner *d)
 	i = -1;
 	while (++i < d->n_philos)
 	{
-		sem_close(d->philo_arr[i].sem_lunch);
+		sem_close(d->philo_arr[i].sem_lunch_lock);
 		sem_unlink(d->philo_arr[i].lname);
 		free(d->philo_arr[i].lname);
 		d->philo_arr[i].lname = NULL;
+		sem_close(d->philo_arr[i].sem_n_meals);
+		sem_unlink(d->philo_arr[i].nname);
+		free(d->philo_arr[i].nname);
+		d->philo_arr[i].nname = NULL;
 	}
 	free(d->philo_arr);
 	d->philo_arr = NULL;
