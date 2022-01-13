@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 14:40:25 by slathouw          #+#    #+#             */
-/*   Updated: 2022/01/13 15:28:27 by slathouw         ###   ########.fr       */
+/*   Updated: 2022/01/13 15:32:49 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ static void	*monitor_full_thread(void *dinner)
 		}
 	}
 	d->full_detected = 1;
-	printf("All philo's full..\n");
+	if (!d->death_detected)
+		printf("All philo's full..\n");
 	free(n_meals_arr);
 	return (NULL);
 }
